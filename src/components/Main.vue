@@ -65,18 +65,10 @@ export default {
         this.currentUserInfo = data.currentUserInfo;
         this.size = data.size;
         this.userInfos = data.userInfos;
-        this.getCurrentUserInfoName();
+        this.name = data.name;
         
     },
 
-    //解析当前用户数据
-    getCurrentUserInfoName() {
-     this.userInfos.forEach(item => {
-       if (item.id == this.currentUserInfo.currentId) {
-         this.name = item.name
-       }
-     });
-    },
 
     //websocket
     init: function() {
@@ -84,7 +76,7 @@ export default {
         alert("您的浏览器不支持socket");
       } else {
         // 实例化socket
-        this.socket = new WebSocket("ws://localhost:8888/websocket");
+        this.socket = new WebSocket("ws://cofa.top:8888/websocket");
         // 监听socket连接
         this.socket.onopen = this.open;
         // 监听socket错误信息
@@ -100,6 +92,7 @@ export default {
       console.log("连接错误");
     },
     getMessage: function(msg) {
+      // console.log(111);
      // console.log(msg.data);
       //解析数据
       this.parseData(msg.data)

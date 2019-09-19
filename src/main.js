@@ -26,7 +26,7 @@ Vue.config.productionTip = false
 
 Vue.http.options.xhr = { withCredentials: true }
 Vue.http.options.emulateJSON = true
-Vue.http.options.root = 'http://127.0.0.1:8888/'
+Vue.http.options.root = 'http://cofa.top:8888/'
 
 
 

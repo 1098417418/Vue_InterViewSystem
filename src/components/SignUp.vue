@@ -1,6 +1,16 @@
 <template>
-  <div>
-    <Form v-on:childUserInfo="commitUserInfo" :userInfo="userInfo"></Form>
+  <div         v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)">
+  <el-alert
+    title="提交服务器需要时间，请勿重复点击提交!  请耐心等待"
+    type="success"
+    center
+    show-icon>
+  </el-alert>
+    <Form v-on:childUserInfo="commitUserInfo" :userInfo="userInfo"
+    ></Form>
   </div>
 </template>
 
@@ -21,12 +31,14 @@ export default {
         commitTime: "",
         department: "",
         status: ""
-      }
+      },
+      loading : false
     };
   },
   methods: {
     commitUserInfo(userInfo) {
-      console.log(userInfo);
+      //console.log(userInfo);
+      this.loading = true
       var name = userInfo.name;
       var phone = userInfo.phone;
       var email = userInfo.email;
@@ -48,6 +60,7 @@ export default {
           message: "请检查数据是否正确",
           type: "error"
         });
+         this.loading = false
         return;
       } else {
         //数据符合 提交到后台
@@ -61,7 +74,7 @@ export default {
         };
 
         var json = JSON.stringify(userInfo);
-        console.log(json);
+        //console.log(json);
         this.$http.post("user", json).then(function(data) {
           console.log(data);
           if (data.body.code == 1) {
@@ -72,6 +85,7 @@ export default {
               message: "报名成功！请勿重复报名" + "  Id: " + id,
               type: "success"
             });
+             this.loading = false
             return;
           } else {
             this.$message({
@@ -79,9 +93,11 @@ export default {
               message: "提交失败,请联系管理员",
               type: "error"
             });
+             this.loading = false
           }
         });
       }
+      this.loading = false
     }
   },
   components: {
